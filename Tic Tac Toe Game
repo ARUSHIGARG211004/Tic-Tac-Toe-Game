@@ -1,0 +1,159 @@
+
+ //------------------------------ TIC TAC TOE GAME ----------------------------
+
+
+/* Including the header files to get necessary functions */
+#include <stdio.h>
+#include <stdlib.h>
+
+/* 
+ (Global Variable : places) <-- Global scope <-- Can be ascessed by any function 
+ Create a array and fill the 9 spaces/boxes of the tic-toc-toe game initially 
+ with numbers from 1 to 9. 
+*/
+char place[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+/****************************************************************************
+ FUNCTION TO DRAW THE BOARD OF TIC-TAC-TOE GAME
+ ***************************************************************************/
+void board()
+{
+    /*                  
+                               |   |
+    i.e TIC TAC TOE - BOARD 1  | 2 | 3
+                            ___|___|___
+                               |   |
+                             4 | 5 | 6
+                            ___|___|___
+                               |   |
+                             7 | 8 | 9
+                               |   |
+    */
+    printf("\n==================> TicTacToe Game <==================\n");
+    printf("Player-1 ==> X\nPlayer-2 ==> O\n\n");
+    printf("    |    |    \n");
+    printf(" %c  | %c  | %c \n", place[1], place[2], place[3]);
+    printf("___ |___ |___ \n");
+    printf("    |    |    \n");
+    printf(" %c  | %c  | %c \n", place[4], place[5], place[6]);
+    printf("___ |___ |___ \n");
+    printf("    |    |    \n"); 
+    printf(" %c  | %c  | %c \n", place[7], place[8], place[9]);
+    printf("    |    |    \n");
+}
+
+/****************************************************************************
+ FUNCTION TO DECIDE WHO WINS BASED ON THE CONDITION
+ ->returning 1  ==> If winning condition satisfies.   <== 1 means True
+ ->returning 0  ==> If all the places are filled.     <== 0 means False
+ ->returning -1 ==> If above conditions not satisfied.
+ ***************************************************************************/
+int win_lose()
+{
+    if (place[1] == place[2] && place[2] == place[3])
+        return 1;
+    else if (place[4] == place[5] && place[5] == place[6])
+        return 1;
+    else if (place[7] == place[8] && place[8] == place[9])
+        return 1;
+    else if (place[1] == place[4] && place[4] == place[7])
+        return 1;
+    else if (place[3] == place[6] && place[6] == place[9])
+        return 1;
+    else if (place[2] == place[5] && place[5] == place[8])
+        return 1;
+    else if (place[1] == place[5] && place[5] == place[9])
+        return 1;
+    else if (place[3] == place[5] && place[5] == place[7])
+        return 1;
+    else if (place[1] != '1' && place[2] != '2' && place[3] != '3' && \
+ place[4] != '4' && place[5] != '5' && place[6] != '6' && place[7] != '7'\
+ && place[8] != '8' && place[9] != '9')
+        return 0;
+    else 
+        return -1;
+}
+
+/*
+ Calling out the main function and writing initial statements where 
+ users/players gives the input one by one
+*/
+int main()
+{
+    int player = 1;
+    int i, choice;
+    char mark;
+    printf("\
+\n_________________User guidelines_________________\n\
+1) Value ranging 1 to 9 to hold the place in board.\n\
+2) Can't overwrite the already taken place.\n\
+3) Any consecutive 3 X's or O's whether Horizonally/Vertically/\
+Diagonally makes you win the match.\n\
+4) one who first match the 3rd step will won the match.\n\n\
+");
+    do
+    {
+        /* Returning the 'board' function to get the board design */
+        board();
+        /*
+        Changing player's per iteration:
+        Initially player = 1,
+        Hence, 1st iterartion => player = 1%2 = False(0) = 2
+        2nd iterration ==> player = 2%2 = True(1) = 1
+        3nd iterration ==> player = 2
+        4nd iterration ==> player = 1 .. and so on..
+        */
+        /* Using conditional (ternary) operator to change the turn evry time */
+        player = (player % 2) ? 1 : 2;
+        printf("\n----It's turn of Player %d----\n", player);
+        printf("Enter a number : ");
+        scanf("%d", &choice);
+        /* 
+        Using another conditional (ternary) operator to input 'X' for
+        player-1 and 'O' for player 2
+        */
+        mark = (player == 1) ? 'X' : 'O';
+        /* Taking input and booking the places/boxes as per */
+        if (choice == 1 && place[1] == '1')
+            place[1] = mark;
+        else if (choice == 2 && place[2] == '2')
+            place[2] = mark;
+        else if (choice == 3 && place[3] == '3')
+            place[3] = mark;
+        else if (choice == 4 && place[4] == '4')
+            place[4] = mark;
+        else if (choice == 5 && place[5] == '5')
+            place[5] = mark;
+        else if (choice == 6 && place[6] == '6')
+            place[6] = mark;
+        else if (choice == 7 && place[7] == '7')
+            place[7] = mark;
+        else if (choice == 8 && place[8] == '8')
+            place[8] = mark;
+        else if (choice == 9 && place[9] == '9')
+            place[9] = mark;
+        else
+        {
+            printf("Invalid Move");
+            /* 
+            If invalid move than same user get change to play again the same
+            turn.
+            */
+            player--;
+        }
+        /*
+        Calling out win_lose() function.
+        */
+        i = win_lose();
+        player++;
+    /* Will run till all the boxes get filled or other conditions satisfied.*/
+    }while (i == -1); 
+    /* Calling out board() function to get board like interface. */
+    board();
+    /* Printing the winner's name to the screen. */
+    if (i == 1)
+        printf("----Player %d wins the match----\n", --player);
+    else
+        printf("----Game ties----\n");
+    return 0;
+}
